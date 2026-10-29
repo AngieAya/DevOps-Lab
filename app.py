@@ -3,21 +3,22 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 class Handler(BaseHTTPRequestHandler):
+    
     def do_GET(self):
-        if self.path != "/health":
+        if self.path == "/health":
+            data = {
+                "status": "ok",
+                "service": "devops-lab"
+            }
+
+        elif self.path == "/version":
+            data = {
+                "application": "devops-lab",
+                "version": "1.0.0"
+            }
+
+        else:
             self.send_error(404)
-            return
-
-        data = {
-                    "status": "ok",
-                    "service": "devops-lab"
-                }
-
-        if self.path == "/version":
-            self.send_response(200)
-            self.send_header("Content-Type", "text/plain")
-            self.end_headers()
-            self.wfile.write(b"Version 1.0.0")
             return
 
         body = json.dumps(data).encode("utf-8")
