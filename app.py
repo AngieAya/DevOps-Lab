@@ -9,9 +9,16 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         data = {
-            "status": "ok",
-            "service": "devops-lab"
-        }
+                    "status": "ok",
+                    "service": "devops-lab"
+                }
+
+        if self.path == "/version":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"Version 1.0.0")
+            return
 
         body = json.dumps(data).encode("utf-8")
 
